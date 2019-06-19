@@ -20,7 +20,9 @@ import requests
 
 load_dotenv() #> loads contents of the .env file into the script's environment
 
-API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY") # default to using the "demo" key if an Env Var is not supplied
+#API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY") # default to using the "demo" key if an Env Var is not supplied
+
+API_KEY = "V2Q082842V40TLO6"
 
 
 
@@ -29,7 +31,7 @@ API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY") # default to using the "demo" k
 ##
 
 def get_response(symbol):
-    request_url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo"
+    request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
     response = requests.get(request_url)
     response_data = json.loads(response.text)    
     return response_data
