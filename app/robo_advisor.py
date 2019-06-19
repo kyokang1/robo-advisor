@@ -4,6 +4,24 @@
 ## Modules & Packages
 
 
+import json
+
+
+import requests
+
+
+##
+## Data Load
+##
+
+
+def get_response(symbol):
+    request_url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo"
+    response = requests.get(request_url)
+    response_data = json.loads(response.text)    
+    return response_data
+
+
 
 
 ##
@@ -18,6 +36,10 @@ print("WELCOME TO ROBO-ADVISOR!")
 print("-------------------------")
 symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
 ## TODO: Validate the symbol
+
+parsed_response = get_response(symbol)
+last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
+#breakpoint()
 
 
 
