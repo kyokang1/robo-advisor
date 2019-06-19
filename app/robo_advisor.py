@@ -5,7 +5,7 @@
 
 
 import json
-
+import datetime
 
 import requests
 
@@ -37,19 +37,6 @@ def transform_response(parsed_response):
     return rows
 
 
-#    aapl = json.loads(file_contents)
-#    
-#    meta = aapl["Meta Data"]
-#    last_refreshed = meta["3. Last Refreshed"]
-#    
-#    daily = aapl["Time Series (Daily)"]
-#    latest_data = daily[str(last_refreshed)]
-#    latest_closing_price = latest_data["4. close"]
-#
-#    return latest_closing_price
-
-
-
 ##
 ## Input
 ##
@@ -71,9 +58,10 @@ rows = transform_response(parsed_response)
 latest_close = rows[0]["close"]
 high_prices = [row["high"] for row in rows] #[team["name"] for team in teams]
 low_prices = [row["low"] for row in rows] #[team["name"] for team in teams]
+recent_high = max(high_prices)
+recent_low = min(low_prices)
 
-
-breakpoint()
+#breakpoint()
 
 
 
@@ -83,9 +71,12 @@ breakpoint()
 
 print("-------------------------")
 print(f"SELECTED STOCK: {symbol}")
+
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
-print("REQUEST AT: 2018-02-20 02:00pm")
+now = datetime.datetime.now()
+print("REQUEST AT: " + str(now.strftime("%Y/%m/%d  %H:%M:%S")))
+
 print("-------------------------")
 print("LATEST DAY: 2018-02-20")
 print("LATEST CLOSE: $100,000.00")
