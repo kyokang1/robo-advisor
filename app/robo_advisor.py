@@ -1,5 +1,13 @@
 # app/robo_advisor.py
 
+## TODO as of Jun/18/2019
+# dotenv
+# API key retrieve
+# input validation
+# buy/sell logic
+
+
+
 ## Modules & Packages
 
 import json
@@ -7,7 +15,12 @@ import datetime
 import csv
 import os
 
+from dotenv import load_dotenv
 import requests
+
+load_dotenv() #> loads contents of the .env file into the script's environment
+
+API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY") # default to using the "demo" key if an Env Var is not supplied
 
 
 
@@ -62,7 +75,9 @@ if __name__ == "__main__":
     # User Type-In
     print("-------------------------")
     symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
+
     ## TODO: Validate the symbol
+    #For example, it should ensure stock symbols are a reasonable amount of characters in length and not numeric in nature.
 
     # Data Load
     parsed_response = get_response(symbol)
@@ -87,8 +102,6 @@ if __name__ == "__main__":
     now = datetime.datetime.now()
 
     # RECOMMENDATION ##TODO
-
-
 
     ##
     ## DISPLAY Output
