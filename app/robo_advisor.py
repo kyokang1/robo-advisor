@@ -1,4 +1,3 @@
-
 # app/robo_advisor.py
 
 ## Modules & Packages
@@ -8,8 +7,8 @@ import datetime
 import csv
 import os
 
-
 import requests
+
 
 
 ##
@@ -49,74 +48,76 @@ def write_to_csv (rows, csv_filepath):
     return True
 
 
+if __name__ == "__main__":       
+
+    ##
+    ## Input
+    ##
+
+    # Intro
+    print("")
+    print("=============================")
+    print("WELCOME TO ROBO-ADVISOR!")
+
+    # User Type-In
+    print("-------------------------")
+    symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
+    ## TODO: Validate the symbol
+
+    # Data Load
+    parsed_response = get_response(symbol)
+    last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
+    #breakpoint()
+
+    # Data Transform & Calculation
+    rows = transform_response(parsed_response)
+    latest_close = rows[0]["close"]
+    high_prices = [row["high"] for row in rows] #[team["name"] for team in teams]
+    low_prices = [row["low"] for row in rows] #[team["name"] for team in teams]
+    recent_high = max(high_prices)
+    recent_low = min(low_prices)
+    #breakpoint()
+
+    # WRITE PRICES TO CSV FILE
+    csv_filepath = os.path.join(os.path.dirname(__file__), "..", "data", f"prices_{symbol}.csv")
+    write_to_csv(rows, csv_filepath)
+    formatted_csv_filepath = csv_filepath.split("../")[1] #> data/prices_"symbol".csv
+
+    # etc
+    now = datetime.datetime.now()
+
+    # RECOMMENDATION ##TODO
 
 
 
+    ##
+    ## DISPLAY Output
+    ##
 
+    print("-------------------------")
+    print(f"SELECTED STOCK: {symbol}")
 
-##
-## Input
-##
+    print("-------------------------")
+    print("REQUESTING STOCK MARKET DATA...")
+    print("REQUEST AT: " + str(now.strftime("%Y/%m/%d  %H:%M:%S")))
 
-# Intro
-print("")
-print("=============================")
-print("WELCOME TO ROBO-ADVISOR!")
+    print("-------------------------")
+    print(f"LATEST DAY: {last_refreshed}")
+    print(f"LATEST CLOSE: {to_usd(float(latest_close))}") #print("LATEST CLOSE: " + to_usd(float(latest_close)))
+    print(f"RECENT HIGH: {to_usd(float(recent_high))}")
+    print(f"RECENT LOW: {to_usd(float(recent_low))}")
 
-# User Type-In
-print("-------------------------")
-symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
-## TODO: Validate the symbol
+    print("-------------------------")
+    print("RECOMMENDATION: BUY!")
+    ## TODO: Recommendation logic
+    print("RECOMMENDATION REASON: TODO")
+    ## TODO: Recommendation logic
+    print(f"WRITING DATA TO CSV: {formatted_csv_filepath}")
 
-parsed_response = get_response(symbol)
-last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
-#breakpoint()
-
-rows = transform_response(parsed_response)
-latest_close = rows[0]["close"]
-high_prices = [row["high"] for row in rows] #[team["name"] for team in teams]
-low_prices = [row["low"] for row in rows] #[team["name"] for team in teams]
-recent_high = max(high_prices)
-recent_low = min(low_prices)
-
-#breakpoint()
-
-# WRITE PRICES TO CSV FILE
-csv_filepath = os.path.join(os.path.dirname(__file__), "..", "data", f"prices_{symbol}.csv")
-write_to_csv(rows, csv_filepath)
-
-
-##
-## DISPLAY Output
-##
-
-print("-------------------------")
-print(f"SELECTED STOCK: {symbol}")
-
-print("-------------------------")
-print("REQUESTING STOCK MARKET DATA...")
-now = datetime.datetime.now()
-print("REQUEST AT: " + str(now.strftime("%Y/%m/%d  %H:%M:%S")))
-
-print("-------------------------")
-print(f"LATEST DAY: {last_refreshed}")
-print(f"LATEST CLOSE: {to_usd(float(latest_close))}") #print("LATEST CLOSE: " + to_usd(float(latest_close)))
-print(f"RECENT HIGH: {to_usd(float(recent_high))}")
-print(f"RECENT LOW: {to_usd(float(recent_low))}")
-
-print("-------------------------")
-print("RECOMMENDATION: BUY!")
-## TODO: Recommendation logic
-print("RECOMMENDATION REASON: TODO")
-## TODO: Recommendation logic
-
-formatted_csv_filepath = csv_filepath.split("../")[1] #> data/prices_"symbol".csv
-print(f"WRITING DATA TO CSV: {formatted_csv_filepath}")
-
-print("-------------------------")
-print("THANK YOU FOR USING ROBO-ADVISOR! \nHAPPY INVESTING!")
-print("=============================")
-print("")
+    print("-------------------------")
+    print("THANK YOU FOR USING ROBO-ADVISOR! \nHAPPY INVESTING!")
+    print("=============================")
+    print("")
 
 
 
