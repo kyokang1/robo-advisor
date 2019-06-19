@@ -36,12 +36,16 @@ def transform_response(parsed_response):
         rows.append(row)
     return rows
 
+def to_usd(price):  
+    return "${0:,.2f}".format(price)
+
 
 ##
 ## Input
 ##
 
 # Intro
+print("")
 print("=============================")
 print("WELCOME TO ROBO-ADVISOR!")
 
@@ -78,16 +82,19 @@ now = datetime.datetime.now()
 print("REQUEST AT: " + str(now.strftime("%Y/%m/%d  %H:%M:%S")))
 
 print("-------------------------")
-print("LATEST DAY: 2018-02-20")
-print("LATEST CLOSE: $100,000.00")
-print("RECENT HIGH: $101,000.00")
-print("RECENT LOW: $99,000.00")
+print(f"LATEST DAY: {last_refreshed}")
+print(f"LATEST CLOSE: {to_usd(float(latest_close))}") #print("LATEST CLOSE: " + to_usd(float(latest_close)))
+print(f"RECENT HIGH: {to_usd(float(recent_high))}")
+print(f"RECENT LOW: {to_usd(float(recent_low))}")
+
 print("-------------------------")
 print("RECOMMENDATION: BUY!")
 print("RECOMMENDATION REASON: TODO")
+
 print("-------------------------")
-print("HAPPY INVESTING!")
-print("-------------------------")
+print("THANK YOU FOR USING ROBO-ADVISOR! \nHAPPY INVESTING!")
+print("=============================")
+print("")
 
 
 
