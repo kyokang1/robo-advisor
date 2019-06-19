@@ -2,7 +2,6 @@
 
 ## TODO as of Jun/18/2019
 # dotenv
-# API key retrieve
 # input validation
 # buy/sell logic
 
@@ -39,14 +38,14 @@ def get_response(symbol):
 def transform_response(parsed_response):
     tsd = parsed_response["Time Series (Daily)"]
     rows = []
-    for date, daily_prices in tsd.items():
+    for date, information in tsd.items():
         row = {
             "timestamp": date,
-            "open": daily_prices["1. open"],
-            "high": daily_prices["2. high"],
-            "low": daily_prices["3. low"],
-            "close": daily_prices["4. close"],
-            "volume": daily_prices["5. volume"] 
+            "open": information["1. open"],
+            "high": information["2. high"],
+            "low": information["3. low"],
+            "close": information["4. close"],
+            "volume": information["5. volume"] 
         }
         rows.append(row)
     return rows
@@ -81,6 +80,25 @@ if __name__ == "__main__":
     ## TODO: Validate the symbol
     #For example, it should ensure stock symbols are a reasonable amount of characters in length and not numeric in nature.
 
+    request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
+    response = requests.get(request_url)
+    
+    parsed_response = get_response(symbol)
+    #print(response)
+    #print(response.text)
+    #print(parsed_response)
+    if "Error Message" in parsed_response:
+        print("Are you sure? Please try again")
+        pass
+
+    #print(response.status_code)
+    
+    
+
+    breakpoint()
+
+
+    
     # Data Load
     parsed_response = get_response(symbol)
     last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
@@ -93,7 +111,7 @@ if __name__ == "__main__":
     low_prices = [row["low"] for row in rows] #[team["name"] for team in teams]
     recent_high = max(high_prices)
     recent_low = min(low_prices)
-    #breakpoint()
+    #breakdpoint()
 
     # WRITE PRICES TO CSV FILE
     csv_filepath = os.path.join(os.path.dirname(__file__), "..", "data", f"prices_{symbol}.csv")
