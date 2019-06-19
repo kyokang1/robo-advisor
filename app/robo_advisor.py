@@ -3,9 +3,11 @@
 
 ## Modules & Packages
 
-
 import json
 import datetime
+import csv
+import os
+
 
 import requests
 
@@ -13,7 +15,6 @@ import requests
 ##
 ## Data Load
 ##
-
 
 def get_response(symbol):
     request_url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo"
@@ -26,7 +27,7 @@ def transform_response(parsed_response):
     rows = []
     for date, daily_prices in tsd.items():
         row = {
-            "date": date,
+            "timestamp": date,
             "open": daily_prices["1. open"],
             "high": daily_prices["2. high"],
             "low": daily_prices["3. low"],
@@ -38,6 +39,19 @@ def transform_response(parsed_response):
 
 def to_usd(price):  
     return "${0:,.2f}".format(price)
+
+def write_to_csv (rows, csv_filepath):
+    with open(csv_filepath, "w") as csv_file: # "w" means "open the file for writing"
+        writer = csv.DictWriter(csv_file, fieldnames=["timestamp", "open", "high", "low", "close", "volume"])
+        writer.writeheader() # uses fieldnames set above
+        for row in rows:
+            writer.writerow(row)
+    return True
+
+
+
+
+
 
 
 ##
@@ -67,10 +81,13 @@ recent_low = min(low_prices)
 
 #breakpoint()
 
+# WRITE PRICES TO CSV FILE
+csv_filepath = os.path.join(os.path.dirname(__file__), "..", "data", f"prices_{symbol}.csv")
+write_to_csv(rows, csv_filepath)
 
 
 ##
-## Output
+## DISPLAY Output
 ##
 
 print("-------------------------")
@@ -89,7 +106,12 @@ print(f"RECENT LOW: {to_usd(float(recent_low))}")
 
 print("-------------------------")
 print("RECOMMENDATION: BUY!")
+## TODO: Recommendation logic
 print("RECOMMENDATION REASON: TODO")
+## TODO: Recommendation logic
+
+formatted_csv_filepath = csv_filepath.split("../")[1] #> data/prices_"symbol".csv
+print(f"WRITING DATA TO CSV: {formatted_csv_filepath}")
 
 print("-------------------------")
 print("THANK YOU FOR USING ROBO-ADVISOR! \nHAPPY INVESTING!")
