@@ -3,7 +3,6 @@
 ## TODO as of Jun/18/2019
 # - buy/sell logic
 
-
 ## Modules & Packages
 
 import json
@@ -76,11 +75,10 @@ if __name__ == "__main__":
         symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
 
         request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
-        #response = requests.get(request_url)
         parsed_response = get_response(symbol)
 
         if "Error Message" in parsed_response:
-            print("Invalid Input! Please try with stock symbols like 'MSFT'!")
+            print("Invalid Input! Please try with valid stock symbols!")
             continue
         else:
             break
@@ -106,6 +104,13 @@ if __name__ == "__main__":
     formatted_csv_filepath = csv_filepath.split("../")[1] #> data/prices_"symbol".csv
 
     # RECOMMENDATION ##TODO
+    
+    # logic 1: 
+    decision = "BUY"
+    reason = "Because it will increase"
+
+    # logic 2: 
+
 
 
     # etc
@@ -131,10 +136,8 @@ if __name__ == "__main__":
     print(f"RECENT LOW: {to_usd(float(recent_low))}")
 
     print("-------------------------")
-    print("RECOMMENDATION: BUY!")
-    ## TODO: Recommendation logic
-    print("RECOMMENDATION REASON: TODO")
-    ## TODO: Recommendation logic
+    print(f"RECOMMENDATION: {decision}!")
+    print(f"RECOMMENDATION REASON: {reason}!")
     print(f"WRITING DATA TO CSV: {formatted_csv_filepath}")
 
     print("-------------------------")
