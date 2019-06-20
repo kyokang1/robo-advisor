@@ -2,7 +2,6 @@
 
 ## TODO as of Jun/18/2019
 # dotenv
-# input validation
 # buy/sell logic
 
 
@@ -73,38 +72,24 @@ if __name__ == "__main__":
     print("=============================")
     print("WELCOME TO ROBO-ADVISOR!")
 
-    # User Type-In
-    print("-------------------------")
-    symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
+    # User Type-In & Validation   
+    while True:
+        print("-------------------------")
+        symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
 
-    ## TODO: Validate the symbol
-    #For example, it should ensure stock symbols are a reasonable amount of characters in length and not numeric in nature.
+        request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
+        #response = requests.get(request_url)
+        parsed_response = get_response(symbol)
 
-    request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
-    response = requests.get(request_url)
-    
-    parsed_response = get_response(symbol)
-    #print(response)
-    #print(response.text)
-    #print(parsed_response)
-    if "Error Message" in parsed_response:
-        print("Are you sure? Please try again")
-        pass
-
-    #print(response.status_code)
-    
-    
-
-    breakpoint()
-
-
-    
-    # Data Load
-    parsed_response = get_response(symbol)
-    last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
-    #breakpoint()
-
+        if "Error Message" in parsed_response:
+            print("Invalid Input! Please try with stock symbols like 'MSFT'!")
+            continue
+        else:
+            break
+        
     # Data Transform & Calculation
+    last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
+
     rows = transform_response(parsed_response)
     latest_close = rows[0]["close"]
     high_prices = [row["high"] for row in rows] #[team["name"] for team in teams]
