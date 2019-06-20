@@ -1,9 +1,8 @@
 # app/robo_advisor.py
 
 ## TODO as of Jun/18/2019
-# dotenv
-# buy/sell logic
-
+# - gitignore
+# - buy/sell logic
 
 
 ## Modules & Packages
@@ -17,15 +16,12 @@ from dotenv import load_dotenv
 import requests
 
 load_dotenv() #> loads contents of the .env file into the script's environment
-
-#API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY") # default to using the "demo" key if an Env Var is not supplied
-
-API_KEY = "V2Q082842V40TLO6"
-
-
+API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY")
+#print(API_KEY)
+#breakpoint()
 
 ##
-## Data Load
+## Define Functions
 ##
 
 def get_response(symbol):
@@ -60,6 +56,9 @@ def write_to_csv (rows, csv_filepath):
             writer.writerow(row)
     return True
 
+##
+## Main Logic
+##
 
 if __name__ == "__main__":       
 
@@ -98,15 +97,22 @@ if __name__ == "__main__":
     recent_low = min(low_prices)
     #breakdpoint()
 
+    ##
+    ## Processing
+    ##
+
     # WRITE PRICES TO CSV FILE
     csv_filepath = os.path.join(os.path.dirname(__file__), "..", "data", f"prices_{symbol}.csv")
     write_to_csv(rows, csv_filepath)
     formatted_csv_filepath = csv_filepath.split("../")[1] #> data/prices_"symbol".csv
 
+    # RECOMMENDATION ##TODO
+
+
     # etc
     now = datetime.datetime.now()
 
-    # RECOMMENDATION ##TODO
+
 
     ##
     ## DISPLAY Output
