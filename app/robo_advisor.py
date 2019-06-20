@@ -1,7 +1,6 @@
 # app/robo_advisor.py
 
 ## TODO as of Jun/18/2019
-# - gitignore
 # - buy/sell logic
 
 
