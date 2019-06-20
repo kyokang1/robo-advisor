@@ -1,6 +1,6 @@
+# .gitignore
 
-
-# Ignoring ".env" Files from Version Control
+# ignore secret environment variable values in the ".env" file: => Exclude from version control
 .env
 
 #NOTE: 
