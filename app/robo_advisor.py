@@ -85,34 +85,32 @@ if __name__ == "__main__":
         print("But, you need to connect to internet. Please try after connecting to online!")
         print("=============================")
         sys.exit()
-
-    # User Type-In & Validation (including preliminary validation) 
-    while True:
-        print("-------------------------")
-        symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
-        
-        #Preliminary Validation before parsing
-        if symbol.isdigit():
-            print("Stock symbols should only cotain alphabets. Please try with valid symbols!")
-            continue
-        elif len(symbol) > 5:
-            print("You input too many characters. Please try with valid symbols!")
-            continue
-        elif symbol == "":
-            print("No input. Please try with valid symbols!")
-            continue
-        #Validation after parsing                
-        else:
-            request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
-            parsed_response = get_response(symbol)
-            if "Error Message" in parsed_response:
-                print("We cannot fild the symbol. Please try with valid stock symbols!")
+    else: 
+        # User Type-In & Validation (including preliminary validation) 
+        while True:
+            print("-------------------------")
+            symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
+            
+            #Preliminary Validation before parsing
+            if symbol.isdigit():
+                print("Stock symbols should only cotain alphabets. Please try with valid symbols!")
                 continue
+            elif len(symbol) > 5:
+                print("You input too many characters. Please try with valid symbols!")
+                continue
+            elif symbol == "":
+                print("No input. Please try with valid symbols!")
+                continue
+
+            #Validation after parsing                
             else:
-                break
-
-    
-
+                request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
+                parsed_response = get_response(symbol)
+                if "Error Message" in parsed_response:
+                    print("We cannot fild the symbol. Please try with valid stock symbols!")
+                    continue
+                else:
+                    break
 
     # Data Transform & Calculation
     last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
