@@ -1,22 +1,20 @@
 # app/robo_advisor.py
 
-## TODO as of Jun/18/2019
-# - buy/sell logic
-
-## Modules & Packages
+##
+## Modules/Packages & Environment
+##
 
 import json
 import datetime
 import csv
 import os
+import statistics
 
 from dotenv import load_dotenv
 import requests
 
 load_dotenv() #> loads contents of the .env file into the script's environment
 API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY")
-#print(API_KEY)
-#breakpoint()
 
 ##
 ## Define Functions
@@ -54,6 +52,9 @@ def write_to_csv (rows, csv_filepath):
             writer.writerow(row)
     return True
 
+def change_rate (a,b):
+        return (a-b)/b
+
 ##
 ## Main Logic
 ##
@@ -74,13 +75,14 @@ if __name__ == "__main__":
         print("-------------------------")
         symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
         
-        #Preliminary Validation
+        #Preliminary Validation before parsing
         if symbol.isdigit():
             print("Stock symbols should only cotain alphabets. Please try with valid symbols!")
             continue
         elif len(symbol) > 5:
             print("You input too many characters. Please try with valid symbols!")
             continue
+        #Validation after parsing
         else:
             request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
             parsed_response = get_response(symbol)
@@ -100,35 +102,56 @@ if __name__ == "__main__":
     low_prices = [row["low"] for row in rows] #[team["name"] for team in teams]
     recent_high = max(high_prices)
     recent_low = min(low_prices)
-    #breakdpoint()
-
-    ##
-    ## Processing
-    ##
 
     # WRITE PRICES TO CSV FILE
     csv_filepath = os.path.join(os.path.dirname(__file__), "..", "data", f"prices_{symbol}.csv")
     write_to_csv(rows, csv_filepath)
     formatted_csv_filepath = csv_filepath.split("../")[1] #> data/prices_"symbol".csv
 
-    # RECOMMENDATION ##TODO
-    
+    ##
+    ## RECOMMENDATION
+    ##
 
     decision = ""
     reason = ""
-
     
+    open_prices = [row["open"] for row in rows] #[team["name"] for team in teams]
+    close_prices = [row["close"] for row in rows] #[team["name"] for team in teams]
+    latest_open = rows[0]["open"]
+    latest_high = rows[0]["high"]
+    latest_low = rows[0]["low"]
 
+    # Logic 1 - BUY when latest high exceeds last 10-day average high by 3%
+    high_prices_10 = [row["high"] for row in rows][:10] #[team["name"] for team in teams]
+    avg_high_prices_10 = statistics.mean(high_prices_10)
+    threshold_logic1 = 0.03
 
-    if latest_close < recent_low:
+    if change_rate(latest_high, avg_high_prices_10) > threshold_logic1:
         decision = "BUY"
-        reason = "Logic 1: As latest closing price is less than recent low, \nstock price is expected to go up!"
-    elif latest_close > recent_high:
-        decision = "SELL"
-        reason = "Logic 2: As latest closing price is higher than recent high, \nstock price is expected to go down!"
+        reason = "Logic 1 - Latest high exceeds last 10-day average high by 3%"
     else:
-        decision = "STAY"
+        decision = "NO BUY"
         reason = "No recommendation can be made at this point"
+    # Result (as of Jun/20/2019 4:37AM)
+    # - BUY: AA, FB
+    # - NO BUY: AAPL, AMZN, BRK.A, C, GOOG, KO, LUV, MSFT, T, WMT
+
+    # Logic 2 - SELL when latest low is less than last 10-day average low by 3%
+    #low_prices_10 = [row["low"] for row in rows][:10] #[team["name"] for team in teams]
+    #avg_low_prices_10 = statistics.mean(low_prices_10)
+    #threshold_logic2 = 0.03
+
+
+
+#    elif latest_high > latest_open:
+#        decision = "BUY"
+#        reason = "Logic 2: As the latest high price exceeds open price, \nstock price is expected to go up!"
+#    elif latest_close < recent_low:
+#        decision = "BUY"
+#        reason = "Logic 3: As latest closing price is less than recent low, \nstock price is expected to go up!"
+#    else:
+#        decision = "NO BUY"
+#        reason = "No recommendation can be made at this point"
 
 
     # etc
@@ -152,10 +175,13 @@ if __name__ == "__main__":
     print(f"LATEST CLOSE: {to_usd(float(latest_close))}") #print("LATEST CLOSE: " + to_usd(float(latest_close)))
     print(f"RECENT HIGH: {to_usd(float(recent_high))}")
     print(f"RECENT LOW: {to_usd(float(recent_low))}")
+    print(f"AVERAGE 10DAYS HIGH: {to_usd(float(avg_high_prices_10))}")
+#    print(f"AVERAGE 10DAYS LOW: {to_usd(float(avg_low_prices_10))}")
 
     print("-------------------------")
     print(f"RECOMMENDATION: {decision}!")
     print(f"RECOMMENDATION REASON: {reason}!")
+    print("-------------------------")
     print(f"WRITING DATA TO CSV: {formatted_csv_filepath}")
 
     print("-------------------------")
