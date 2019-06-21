@@ -182,7 +182,7 @@ if __name__ == "__main__":
         # Result (as of Jun/21/2019 6:07PM)
         # - BUY: AAPL, 
         # - NO BUY: C, GOOG, LUV, MSFT, T, WMT, CIT, F
-   elif latest_close < avg_low_prices_10:
+    elif latest_close < avg_low_prices_10:
         decision = "SELL"
         reason = "Logic 5: As latest close price is less than last 10-day average, \nstock price is expected to go up!"
         # Result (as of Jun/21/2019 5:57PM)
