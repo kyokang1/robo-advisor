@@ -9,6 +9,7 @@ import datetime
 import csv
 import os
 import statistics
+import sys
 
 from dotenv import load_dotenv
 import requests
@@ -55,6 +56,15 @@ def write_to_csv (rows, csv_filepath):
 def change_rate (a,b):
         return (a-b)/b
 
+def check_internet():
+    url='http://www.google.com/'
+    timeout=5
+    try:
+        _ = requests.get(url, timeout=timeout)
+        return True
+    except requests.ConnectionError:
+        return False
+
 ##
 ## Main Logic
 ##
@@ -70,6 +80,12 @@ if __name__ == "__main__":
     print("=============================")
     print("WELCOME TO ROBO-ADVISOR!")
 
+    # Check Internet Connection
+    if check_internet() == False:
+        print("But, you need to connect to internet. Please try after connecting to online!")
+        print("=============================")
+        sys.exit()
+
     # User Type-In & Validation (including preliminary validation) 
     while True:
         print("-------------------------")
@@ -82,17 +98,22 @@ if __name__ == "__main__":
         elif len(symbol) > 5:
             print("You input too many characters. Please try with valid symbols!")
             continue
-        #Validation after parsing
+        elif symbol == "":
+            print("No input. Please try with valid symbols!")
+            continue
+        #Validation after parsing                
         else:
             request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
             parsed_response = get_response(symbol)
-
             if "Error Message" in parsed_response:
                 print("We cannot fild the symbol. Please try with valid stock symbols!")
                 continue
             else:
                 break
-        
+
+    
+
+
     # Data Transform & Calculation
     last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
