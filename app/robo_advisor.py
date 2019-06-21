@@ -145,26 +145,55 @@ if __name__ == "__main__":
     avg_high_prices_10 = statistics.mean(high_prices_10)
     threshold_logic1 = 0.03
 
+    # Logic 2 - SELL when latest low is less than last 10-day average low by 3%
+    low_prices_10 = [row["low"] for row in rows][:10] #[team["name"] for team in teams]
+    avg_low_prices_10 = statistics.mean(low_prices_10)
+    threshold_logic2 = -0.02
+    #avg_low_prices_10 == 100  #> for testing
+    #latest_low = 96  #> for testing
+
+    # Logic 3 - BUY when close price increases three days in a row
+    latest_close_1 = rows[1]["close"]
+    latest_close_2 = rows[2]["close"]
+
+    # Logic 3 - BUY when close price increases three days in a row
+
+    # Implementing recommendation logic
     if change_rate(latest_high, avg_high_prices_10) > threshold_logic1:
         decision = "BUY"
         reason = "Logic 1 - Latest high exceeds last 10-day average high by 3%"
-    else:
-        decision = "NO BUY"
-        reason = "No recommendation can be made at this point"
-    # Result (as of Jun/20/2019 4:37AM)
-    # - BUY: AA, FB
-    # - NO BUY: AAPL, AMZN, BRK.A, C, GOOG, KO, LUV, MSFT, T, WMT
-
-    # Logic 2 - SELL when latest low is less than last 10-day average low by 3%
-    #low_prices_10 = [row["low"] for row in rows][:10] #[team["name"] for team in teams]
-    #avg_low_prices_10 = statistics.mean(low_prices_10)
-    #threshold_logic2 = 0.03
-
-
-
-#    elif latest_high > latest_open:
+        # Result (as of Jun/21/2019 4:37AM)
+        # - BUY: AA, FB, HPE, ZTS
+        # - NO BUY: AAPL, AMZN, BRK.A, C, GOOG, KO, LUV, MSFT, T, WMT, CIT, F
+    elif change_rate(latest_low, avg_low_prices_10) < threshold_logic2:
+        decision = "SELL"
+        reason = "Logic 2 - Latest low is less than last 10-day average low by 2%"
+        # Result (as of Jun/21/2019 8|:16AM)
+        # - SELL: n/a
+#    elif latest_close > latest_close_1 and latest_close_1 > latest_close_2:
 #        decision = "BUY"
-#        reason = "Logic 2: As the latest high price exceeds open price, \nstock price is expected to go up!"
+#        reason = "Logic 3 - Close price increases for 3 days in a row"
+#        # Result (as of Jun/21/2019 8:23AM)
+#        # - BUY: AMZN, BRK.A, KO, MSFT, GOOG (updated)
+#        # - NO BUY: AAPL, C, GOOG, LUV, MSFT, T, WMT, CIT, F
+#    elif latest_close > latest_high:
+#        decision = "BUY"
+#        reason = "Logic 4: Latest close price exceeds the latest high, \nstock price is expected to go up!"
+#        # TODO
+#        # Result (as of Jun/21/2019 5:49PM)
+#        # - BUY: n/a
+    else:
+        decision = "STAY"
+        reason = "No recommendation can be made at this point"
+
+    print("latest close :", latest_close)
+    print("latest high :", latest_high)
+    #print(change_rate(latest_low, avg_low_prices_10))
+
+
+
+
+
 #    elif latest_close < recent_low:
 #        decision = "BUY"
 #        reason = "Logic 3: As latest closing price is less than recent low, \nstock price is expected to go up!"
@@ -195,7 +224,7 @@ if __name__ == "__main__":
     print(f"RECENT HIGH: {to_usd(float(recent_high))}")
     print(f"RECENT LOW: {to_usd(float(recent_low))}")
     print(f"AVERAGE 10DAYS HIGH: {to_usd(float(avg_high_prices_10))}")
-#    print(f"AVERAGE 10DAYS LOW: {to_usd(float(avg_low_prices_10))}")
+    print(f"AVERAGE 10DAYS LOW: {to_usd(float(avg_low_prices_10))}")
 
     print("-------------------------")
     print(f"RECOMMENDATION: {decision}!")
