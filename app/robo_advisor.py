@@ -163,7 +163,7 @@ if __name__ == "__main__":
         decision = "BUY"
         reason = "Logic 1 - Latest high exceeds last 10-day average high by 3%"
         # Result (as of Jun/21/2019 4:37AM)
-        # - BUY: AA, FB, HPE, ZTS
+        # - BUY: AA, FB, HPE, ZTS, T(updated as of Jun/21/2019 6:04pm)
         # - NO BUY: AAPL, AMZN, BRK.A, C, GOOG, KO, LUV, MSFT, T, WMT, CIT, F
     elif change_rate(latest_low, avg_low_prices_10) < threshold_logic2:
         decision = "SELL"
@@ -174,32 +174,29 @@ if __name__ == "__main__":
         decision = "BUY"
         reason = "Logic 3 - Close price increases for 3 days in a row"
         # Result (as of Jun/21/2019 8:23AM)
-        # - BUY: AMZN, BRK.A, KO, MSFT, GOOG (updated)
+        # - BUY: AMZN, BRK.A, KO, MSFT, GOOG(updated as of Jun/21/2019 6:00pm)
         # - NO BUY: AAPL, C, GOOG, LUV, MSFT, T, WMT, CIT, F
-    elif latest_close > latest_high:
+    elif latest_close > avg_high_prices_10:
         decision = "BUY"
-        reason = "Logic 4: Latest close price exceeds the latest high, \nstock price is expected to go up!"
-        # TODO
-        # Result (as of Jun/21/2019 5:49PM)
-        # - BUY: n/a
+        reason = "Logic 4: As latest close price exceeds last 10-day average, \nstock price is expected to go up!"
+        # Result (as of Jun/21/2019 6:07PM)
+        # - BUY: AAPL, 
+        # - NO BUY: C, GOOG, LUV, MSFT, T, WMT, CIT, F
+   elif latest_close < avg_low_prices_10:
+        decision = "SELL"
+        reason = "Logic 5: As latest close price is less than last 10-day average, \nstock price is expected to go up!"
+        # Result (as of Jun/21/2019 5:57PM)
+        # - SELL: n/a
     else:
         decision = "STAY"
         reason = "No recommendation can be made at this point"
 
-    print("latest close :", latest_close)
-    print("latest high :", latest_high)
+#    print("latest close :", latest_close)
+#    print("latest high :", latest_high)
     #print(change_rate(latest_low, avg_low_prices_10))
 
 
 
-
-
-#    elif latest_close < recent_low:
-#        decision = "BUY"
-#        reason = "Logic 3: As latest closing price is less than recent low, \nstock price is expected to go up!"
-#    else:
-#        decision = "NO BUY"
-#        reason = "No recommendation can be made at this point"
 
 
     # etc
