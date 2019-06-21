@@ -140,23 +140,21 @@ if __name__ == "__main__":
     latest_high = rows[0]["high"]
     latest_low = rows[0]["low"]
 
-    # Logic 1 - BUY when latest high exceeds last 10-day average high by 3%
+    # Define for Logic 1 - BUY when latest high exceeds last 10-day average high by 3%
     high_prices_10 = [row["high"] for row in rows][:10] #[team["name"] for team in teams]
     avg_high_prices_10 = statistics.mean(high_prices_10)
     threshold_logic1 = 0.03
 
-    # Logic 2 - SELL when latest low is less than last 10-day average low by 3%
+    # Define for Logic 2 - SELL when latest low is less than last 10-day average low by 3%
     low_prices_10 = [row["low"] for row in rows][:10] #[team["name"] for team in teams]
     avg_low_prices_10 = statistics.mean(low_prices_10)
     threshold_logic2 = -0.02
     #avg_low_prices_10 == 100  #> for testing
     #latest_low = 96  #> for testing
 
-    # Logic 3 - BUY when close price increases three days in a row
+    # Define for Logic 3 - BUY when close price increases three days in a row
     latest_close_1 = rows[1]["close"]
     latest_close_2 = rows[2]["close"]
-
-    # Logic 3 - BUY when close price increases three days in a row
 
     # Implementing recommendation logic
     if change_rate(latest_high, avg_high_prices_10) > threshold_logic1:
@@ -191,18 +189,9 @@ if __name__ == "__main__":
         decision = "STAY"
         reason = "No recommendation can be made at this point"
 
-#    print("latest close :", latest_close)
-#    print("latest high :", latest_high)
-    #print(change_rate(latest_low, avg_low_prices_10))
-
-
-
-
-
     # etc
     now = datetime.datetime.now()
-
-
+    
 
     ##
     ## DISPLAY Output
