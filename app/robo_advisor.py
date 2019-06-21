@@ -34,11 +34,11 @@ def transform_response(parsed_response):
     for date, information in tsd.items():
         row = {
             "timestamp": date,
-            "open": information["1. open"],
-            "high": information["2. high"],
-            "low": information["3. low"],
-            "close": information["4. close"],
-            "volume": information["5. volume"] 
+            "open": float(information["1. open"]),
+            "high": float(information["2. high"]),
+            "low": float(information["3. low"]),
+            "close": float(information["4. close"]),
+            "volume": float(information["5. volume"]) 
         }
         rows.append(row)
     return rows
@@ -69,19 +69,24 @@ if __name__ == "__main__":
     print("=============================")
     print("WELCOME TO ROBO-ADVISOR!")
 
-    # User Type-In & Validation   
+    # User Type-In & Validation (including preliminary validation) 
     while True:
         print("-------------------------")
         symbol = input("Please input a stock symbol (e.g. MSFT, AAPL, AMZN): ")
-
-        request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
-        parsed_response = get_response(symbol)
-
-        if "Error Message" in parsed_response:
-            print("Invalid Input! Please try with valid stock symbols!")
+        
+        #Preliminary Validation
+        if symbol.isdigit():
+            print("Stock symbols should only cotain alphabets. Please try with valid symbols!")
             continue
         else:
-            break
+            request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
+            parsed_response = get_response(symbol)
+
+            if "Error Message" in parsed_response:
+                print("We cannot fild the symbol. Please try with valid stock symbols!")
+                continue
+            else:
+                break
         
     # Data Transform & Calculation
     last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
@@ -105,12 +110,22 @@ if __name__ == "__main__":
 
     # RECOMMENDATION ##TODO
     
-    # logic 1: 
-    decision = "BUY"
-    reason = "Because it will increase"
 
-    # logic 2: 
+    decision = ""
+    reason = ""
 
+    
+
+
+    if latest_close < recent_low:
+        decision = "BUY"
+        reason = "Logic 1: As latest closing price is less than recent low, \nstock price is expected to go up!"
+    elif latest_close > recent_high:
+        decision = "SELL"
+        reason = "Logic 2: As latest closing price is higher than recent high, \nstock price is expected to go down!"
+    else:
+        decision = "STAY"
+        reason = "No recommendation can be made at this point"
 
 
     # etc
