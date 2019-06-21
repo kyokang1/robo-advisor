@@ -78,6 +78,9 @@ if __name__ == "__main__":
         if symbol.isdigit():
             print("Stock symbols should only cotain alphabets. Please try with valid symbols!")
             continue
+        elif len(symbol) > 5:
+            print("You input too many characters. Please try with valid symbols!")
+            continue
         else:
             request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={API_KEY}"
             parsed_response = get_response(symbol)
