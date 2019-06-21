@@ -170,12 +170,12 @@ if __name__ == "__main__":
         reason = "Logic 2 - Latest low is less than last 10-day average low by 2%"
         # Result (as of Jun/21/2019 8|:16AM)
         # - SELL: n/a
-#    elif latest_close > latest_close_1 and latest_close_1 > latest_close_2:
-#        decision = "BUY"
-#        reason = "Logic 3 - Close price increases for 3 days in a row"
-#        # Result (as of Jun/21/2019 8:23AM)
-#        # - BUY: AMZN, BRK.A, KO, MSFT, GOOG (updated)
-#        # - NO BUY: AAPL, C, GOOG, LUV, MSFT, T, WMT, CIT, F
+    elif latest_close > latest_close_1 and latest_close_1 > latest_close_2:
+        decision = "BUY"
+        reason = "Logic 3 - Close price increases for 3 days in a row"
+        # Result (as of Jun/21/2019 8:23AM)
+        # - BUY: AMZN, BRK.A, KO, MSFT, GOOG (updated)
+        # - NO BUY: AAPL, C, GOOG, LUV, MSFT, T, WMT, CIT, F
 #    elif latest_close > latest_high:
 #        decision = "BUY"
 #        reason = "Logic 4: Latest close price exceeds the latest high, \nstock price is expected to go up!"
