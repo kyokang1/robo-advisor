@@ -176,12 +176,12 @@ if __name__ == "__main__":
         # Result (as of Jun/21/2019 8:23AM)
         # - BUY: AMZN, BRK.A, KO, MSFT, GOOG (updated)
         # - NO BUY: AAPL, C, GOOG, LUV, MSFT, T, WMT, CIT, F
-#    elif latest_close > latest_high:
-#        decision = "BUY"
-#        reason = "Logic 4: Latest close price exceeds the latest high, \nstock price is expected to go up!"
-#        # TODO
-#        # Result (as of Jun/21/2019 5:49PM)
-#        # - BUY: n/a
+    elif latest_close > latest_high:
+        decision = "BUY"
+        reason = "Logic 4: Latest close price exceeds the latest high, \nstock price is expected to go up!"
+        # TODO
+        # Result (as of Jun/21/2019 5:49PM)
+        # - BUY: n/a
     else:
         decision = "STAY"
         reason = "No recommendation can be made at this point"
