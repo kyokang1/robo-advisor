@@ -2,7 +2,7 @@
 
 ## Summary
 
-Welcome to Robo-Advisor Investment Tool developed by K-young. This "Robo Advisor" project will make recommendation on stock purchase or sell based on the pre-implemented logic. The data is updated on real-time basis using AlphaVantage Stock Market API. If the stock information matches with one of the recommendation logics, the system will give you the investment recommendation such as "BUY" or "SELL". If there is no recommendation logic applied, you will receive "STAY" recommendation.
+Welcome to Robo-Advisor Investment Tool developed by K-young. This "Robo Advisor" project will make recommendation on stock purchase or sell based on the pre-implemented logic. The data is updated on real-time basis using AlphaVantage Stock Market API. If the stock information matches with one of the recommendation logics, the system will give you the investment recommendation such as `"BUY"` or `"SELL"`. If there is no recommendation logic applied, you will receive `"STAY"` recommendation.
 
 
 ## Set-up
@@ -74,10 +74,12 @@ pytest
 The designed tests are as follows:
 ```sh
 test_to_usd  
--> Test various scenarios to ensure the price formatting function displays a dollar sign, \ntwo decimal places, and a thousands separator.
+-> Test various scenarios to ensure the price formatting function displays a dollar sign, 
+   two decimal places, and a thousands separator.
 
 test_get_response
--> Test to ensure the function returns the expected response data in a usable format \n(i.e. a dictionary with keys "Meta Data" and "Time Series (Daily)").
+-> Test to ensure the function returns the expected response data in a usable format 
+   (i.e. a dictionary with keys "Meta Data" and "Time Series (Daily)").
 ```
 
 ## Recommendation Logic
