@@ -1,53 +1,52 @@
-# K-YOUNG's "Robo Advisor" Project
+# K-young's "Robo Advisor" Project
 
 ## Object of Program
 
 This "Robo Advisor" project will make recommendation on stock purchase or sell based on the pre-implemented logic. The data is updated on real-time basis using AlphaVantage Stock Market API. 
 
-## Prerequisites
 
-It is recommended to set up a virtual environment
+## Set-up
+
+### Prerequisites
+
+It is recommended to set up a virtual environment to ensure Python runs under the following prerequisites:
   + Anaconda 3.7
   + Python 3.7
   + Pip
 
-## Installation
+### Installation
 
-Set up 
+Install pip command to install the packages required to run the program. You can run the following command in command line:
+```
+pip install -r requirements.txt
+```
 
-Make sure to save Python files like this whenever you're done editing them. After setting up a virtual environment, we will be ready to run this file.
-
-Use your text editor or the command-line to create a new file called "requirements.txt", and then place the following contents inside:
-
+The required packages are as follows:
 ```
 requests
 python-dotenv
 ```
 
-After setting up a virtual environment, we will be ready to install these packages.
+### AlphaVantage API
 
+As the program fetches real-time stock information using AlphaVantage API, the user needs API Key to use the API and run the program. Please [obtain an AlphaVantage API Key](https://www.alphavantage.co/support/#api-key) (e.g. "abc123") in the link.
 
-
-
-## Setup
-
-Before using or developing this application, take a moment to [obtain an AlphaVantage API Key](https://www.alphavantage.co/support/#api-key) (e.g. "abc123").
-
-After obtaining an API Key, create a new file in this repository called ".env", and update the contents of the ".env" file to specify your real API Key:
+After obtaining an API Key, you need to input your API Key in the file ".env" to specify your real API Key like below:
 
     ALPHAVANTAGE_API_KEY="abc123"
 
-Don't worry, the ".env" has already been [ignored](/.gitignore) from version control for you!
+Please note that the ".env" is [ignored](/.gitignore) from the version control using ".gitignore" file for security purpose.
 
-> NOTE: this app will try to use a "demo" API key if this environment variables is not configured.
 
 ## Usage
 
-Run the recommendation script:
+Use your text editor or the command-line to run the recommendation script like below:
 
 ```py
 python app/robo_advisor.py
 ```
+
+
 
 ## Testing
 
@@ -63,8 +62,23 @@ Run tests:
 pytest
 ```
 
+## Recommendation Logic
+
+  1. Logic 1 - BUY when latest high exceeds last 10-day average high by 3%
+  2. Logic 2 - SELL when latest low is less than last 10-day average low by 3%
+  3. Logic 3 - BUY when close price increases three days in a row
+  4. Logic 4 - BUY when latest close price exceeds last 10-day average high
+  5. Logic 5 - SELL when latest close price is less than last 10-day average low
+
+Otherwise, "Stay" (a.k.a. No Recommendation) is fetched.
+
 ## [License](/LICENSE.md)
 
+
+
+## Leanne's work
+ykhjiuukiuit8875t
+hjghehj4t6crrqbb;kyryuo
 
 
 
@@ -76,14 +90,6 @@ pytest
 >  + [Environment Variables](/notes/environment-variables.md)
 >  + The ["Omniparser" Exercise](/exercises/omniparser/README.md) (specifically the stock data parsing challenge)
 >  + The ["Web Requests" Exercise](/exercises/web-requests/README.md)
-
-
-## Learning Objectives
-
-  1. Create a tool to automate manual efforts and streamline business processes.
-  2. Gain familiarity with APIs and web services, and practice issuing HTTP requests in Python (focusing on GET requests).
-  3. Increase exposure to JSON-formatted data, and practice processing it in Python.
-  4. Leverage built-in Python modules and third-party Python packages to speed development and enhance capabilities.
 
 
 ## Setup
@@ -100,7 +106,6 @@ After cloning the repo, navigate there from the command-line:
 cd ~/Desktop/robo-advisor
 ```
 
-Use your text editor or the command-line to create a new sub-directory called "app" with a file called "robo_advisor.py", and then place the following contents inside:
 
 ```py
 # app/robo_advisor.py
