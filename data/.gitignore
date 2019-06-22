@@ -4,6 +4,7 @@
 
 # ignore all files in this directory:
 *
+## Kyoung's note: .gitignore in data directory is implemented after uploading some of the data csv files.
 
 # except this gitignore file:
 !.gitignore
