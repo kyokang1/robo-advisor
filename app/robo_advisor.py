@@ -145,10 +145,10 @@ if __name__ == "__main__":
     avg_high_prices_10 = statistics.mean(high_prices_10)
     threshold_logic1 = 0.03
 
-    # Define for Logic 2 - SELL when latest low is less than last 10-day average low by 3%
+    # Define for Logic 2 - SELL when latest low is less than last 10-day average low by 1.5%
     low_prices_10 = [row["low"] for row in rows][:10] #[team["name"] for team in teams]
     avg_low_prices_10 = statistics.mean(low_prices_10)
-    threshold_logic2 = -0.02
+    threshold_logic2 = -0.015
     #avg_low_prices_10 == 100  #> for testing
     #latest_low = 96  #> for testing
 
@@ -165,7 +165,7 @@ if __name__ == "__main__":
         # - NO BUY: AAPL, AMZN, BRK.A, C, GOOG, KO, LUV, MSFT, T, WMT, CIT, F
     elif change_rate(latest_low, avg_low_prices_10) < threshold_logic2:
         decision = "SELL"
-        reason = "Logic 2 - Latest low is less than last 10-day average low by 2%"
+        reason = "Logic 2 - Latest low is less than last 10-day average low by 1.5%"
         # Result (as of Jun/21/2019 8|:16AM)
         # - SELL: n/a
     elif latest_close > latest_close_1 and latest_close_1 > latest_close_2:
@@ -176,13 +176,13 @@ if __name__ == "__main__":
         # - NO BUY: AAPL, C, GOOG, LUV, MSFT, T, WMT, CIT, F
     elif latest_close > avg_high_prices_10:
         decision = "BUY"
-        reason = "Logic 4: As latest close price exceeds last 10-day average, \nstock price is expected to go up!"
+        reason = "Logic 4: As latest close price exceeds last 10-day average high, \nstock price is expected to go up!"
         # Result (as of Jun/21/2019 6:07PM)
         # - BUY: AAPL, 
         # - NO BUY: C, GOOG, LUV, MSFT, T, WMT, CIT, F
     elif latest_close < avg_low_prices_10:
         decision = "SELL"
-        reason = "Logic 5: As latest close price is less than last 10-day average, \nstock price is expected to go up!"
+        reason = "Logic 5: As latest close price is less than last 10-day average low, \nstock price is expected to go up!"
         # Result (as of Jun/21/2019 5:57PM)
         # - SELL: n/a
     else:
@@ -191,7 +191,7 @@ if __name__ == "__main__":
 
     # etc
     now = datetime.datetime.now()
-    
+
 
     ##
     ## DISPLAY Output
@@ -222,6 +222,3 @@ if __name__ == "__main__":
     print("THANK YOU FOR USING ROBO-ADVISOR! \nHAPPY INVESTING!")
     print("=============================")
     print("")
-
-
-
